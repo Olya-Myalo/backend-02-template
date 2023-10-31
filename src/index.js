@@ -11,15 +11,8 @@ const server = http.createServer((request, response) => {
     const queryObject = parsedUrl.query;
 
     if (parsedUrl.pathname === '/users') {
-        fs.readFile('/data/users.json', (err, data) => {
-            if (err) {
                 response.writeHead(200, { 'Content-Type': 'text/plain' });
                 response.end(getUsers());
-            } else {
-                response.writeHead(200, { 'Content-Type': 'application/json' });
-                response.end(data);
-            }
-        });
     } else if ('hello' in queryObject) {
         const name = queryObject['hello'];
         if (name) {
@@ -34,7 +27,7 @@ const server = http.createServer((request, response) => {
         response.end('Hello, World!');
     } else {
         response.writeHead(500, { 'Content-Type': 'text/plain' });
-        response.end();
+        response.end("");
     }
 });
 
