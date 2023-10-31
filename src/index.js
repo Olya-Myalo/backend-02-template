@@ -11,7 +11,7 @@ const server = http.createServer((request, response) => {
     const queryObject = parsedUrl.query;
 
     if (parsedUrl.pathname === '/users') {
-        fs.readFile('data/users.json', (err, data) => {
+        fs.readFile('/data/users.json', (err, data) => {
             if (err) {
                 response.writeHead(200, { 'Content-Type': 'text/plain' });
                 response.end(getUsers());
