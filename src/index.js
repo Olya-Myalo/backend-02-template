@@ -13,7 +13,6 @@ const server = http.createServer((request, response) => {
     if (parsedUrl.pathname === '/users') {
         fs.readFile('data/users.json', (err, data) => {
             if (err) {
-                console.error('Ошибка чтения файла:', err);
                 response.writeHead(200, { 'Content-Type': 'text/plain' });
                 response.end(getUsers());
             } else {
@@ -33,6 +32,9 @@ const server = http.createServer((request, response) => {
     } else if (parsedUrl.pathname === '/') {
         response.writeHead(200, { 'Content-Type': 'text/plain' });
         response.end('Hello, World!');
+    } else {
+        response.writeHead(500, { 'Content-Type': 'text/plain' });
+        response.end();
     }
 });
 
