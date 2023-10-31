@@ -1,7 +1,7 @@
 const http = require('http');
-const getUsers = require('./modules/users');
 const url = require('url');
 const fs = require('fs');
+const getUsers = require('./modules/users');
 
 const hostname = '127.0.0.1';
 const port = 3000;
@@ -13,6 +13,7 @@ const server = http.createServer((request, response) => {
     if (parsedUrl.pathname === '/users') {
         fs.readFile('data/users.json', (err, data) => {
             if (err) {
+                console.error('Ошибка чтения файла:', err);
                 response.writeHead(200, { 'Content-Type': 'text/plain' });
                 response.end(getUsers());
             } else {
