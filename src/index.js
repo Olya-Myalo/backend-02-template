@@ -22,7 +22,7 @@ const server = http.createServer((request, response) => {
             response.writeHead(400, { 'Content-Type': 'text/plain' });
             response.end('Bad Request: Enter a name');
         }
-    } else if (parsedUrl.pathname === '/') {
+    } else if (Object.keys(queryObject.length == 0)) {
         response.writeHead(200, { 'Content-Type': 'text/plain' });
         response.end('Hello, World!');
     } else {
