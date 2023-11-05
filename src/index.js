@@ -1,35 +1,34 @@
 const http = require('http');
-const url = require('url');
-const fs = require('fs');
 const getUsers = require('./modules/users');
 
 const hostname = '127.0.0.1';
 const port = 3000;
 
 const server = http.createServer((request, response) => {
-    const parsedUrl = url.parse(request.url, true);
-    const queryObject = parsedUrl.query;
-
-    if (parsedUrl.pathname === '/users') {
-                response.writeHead(200, { 'Content-Type': 'text/plain' });
-                response.end(getUsers());
-    } else if ('hello' in queryObject) {
-        const name = queryObject['hello'];
-        if (name) {
-            response.writeHead(200, { 'Content-Type': 'text/plain' });
-            response.end(`Hello, ${name}.`);
-        } else {
-            response.writeHead(400, { 'Content-Type': 'text/plain' });
-            response.end('Bad Request: Enter a name');
-        }
-    } else if (parsedUrl.pathname === '/') {
-        response.writeHead(200, { 'Content-Type': 'text/plain' });
-        response.end('Hello, World!');
+    const url = new URL(request.url, "http://127.0.0.1:3003");
+    const searchParams = url.searchParams;
+  
+    if (searchParams.size === 0) {
+      response.statusCode = 200;
+      response.end("Hello, World!");
+    } else if (searchParams.has("hello")) {
+      const name = searchParams.get("hello");
+      if (!name) {
+        response.statusCode = 400;
+        response.end("Enter a name");
+      } else {
+        response.statusCode = 200;
+        response.end(`Hello, ${name}.`);
+      }
+    } else if (searchParams.has("users")) {
+      response.statusCode = 200;
+      response.setHeader("Content-Type", "application/json");
+      response.end(getUsers());
     } else {
-        response.writeHead(500, { 'Content-Type': 'text/plain' });
-        response.end("");
+      response.statusCode = 500;
+      response.end("");
     }
-});
+  });
 
 server.listen(port, hostname, () => {
     console.log(`Сервер запущен по адресу http://${hostname}:${port}/`);
