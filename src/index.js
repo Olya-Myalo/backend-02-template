@@ -8,7 +8,7 @@ const server = http.createServer((request, response) => {
     const url = new URL(request.url, "http://127.0.0.1:3003");
     const searchParams = url.searchParams;
   
-    if (searchParams.size === 0) {
+    if (searchParams.size === 0 && url.pathname === '/') {
       response.statusCode = 200;
       response.end("Hello, World!");
     } else if (searchParams.has("hello")) {
